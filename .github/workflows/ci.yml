@@ -1,0 +1,13 @@
+name: Build
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: select environment
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+          - qa
+          - prod
