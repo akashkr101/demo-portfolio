@@ -18,6 +18,6 @@ jobs:
       - name: Build and push Docker image with branch-based tag
         run: |
           TAG=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/portfolio-v1:$TAG
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/demo-portfolio:$TAG
           docker build -t $IMAGE .
           docker push $IMAGE
