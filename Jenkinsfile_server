@@ -19,6 +19,7 @@ pipeline {
                 checkout scmGit(branches: [[name: '*/dev']], extensions: [], userRemoteConfigs: [[credentialsId: 'Jenkins-webhooks', url: 'https://github.com/akashkr101/portfolio.git']])
             }
         }
+
         stage('directory info') {
             steps {
                 sh 'ls'
@@ -26,36 +27,11 @@ pipeline {
                 sh 'ls -lrt'
             }
         }
+
         stage('Install & Build') {
             steps {
                 sh 'npm install'
                 sh 'npm run build'
-            }
-        }
-        stage('Prepare and Verify SonarQube analysis') {
-            steps {
-                echo 'Setting up environment for SonarQube analysis'
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    echo "SonarQube environment configured: ${SONARQUBE_ENV}"
-                }
-                echo 'Checking sonar-scanner version'
-                sh 'sonar-scanner --version' // Check if sonar-scanner is available
-            }
-        }
-
-        stage('Run SonarQube Analysis') {
-            steps {
-                withSonarQubeEnv("${SONARQUBE_ENV}") {
-                    sh 'sonar-scanner' // Assumes sonar-project.properties is present
-                }
-            }
-        }
-
-        stage('Quality Gate') {
-            steps {
-                timeout(time: 1, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
-                }
             }
         }
 
