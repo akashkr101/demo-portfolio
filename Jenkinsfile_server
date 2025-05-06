@@ -32,24 +32,30 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stage('Prepare SonarQube analysis') {
+        stages {
+        stage('Prepare and Verify SonarQube analysis') {
             steps {
                 echo 'Setting up environment for SonarQube analysis'
                 withSonarQubeEnv("${SONARQUBE_ENV}") {
                     echo "SonarQube environment configured: ${SONARQUBE_ENV}"
                 }
+                echo 'Checking sonar-scanner version'
+                sh 'sonar-scanner --version' // Check if sonar-scanner is available
             }
         }
-        stage('Verify sonar-scanner') {
-            steps {
-                echo 'new stage'
-                sh 'sonar-scanner --version'  // Check if sonar-scanner is available
-            }
-        }
+
         stage('Run SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('Sonarqube') { // Name of your SonarQube server configured in Jenkins
-                    sh 'sonar-scanner'
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    sh 'sonar-scanner' // Assumes sonar-project.properties is present
+                }
+            }
+        }
+
+        stage('Quality Gate') {
+            steps {
+                timeout(time: 1, unit: 'MINUTES') {
+                    waitForQualityGate abortPipeline: true
                 }
             }
         }
