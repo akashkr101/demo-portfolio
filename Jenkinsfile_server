@@ -32,7 +32,6 @@ pipeline {
                 sh 'npm run build'
             }
         }
-        stages {
         stage('Prepare and Verify SonarQube analysis') {
             steps {
                 echo 'Setting up environment for SonarQube analysis'
@@ -59,6 +58,7 @@ pipeline {
                 }
             }
         }
+
         stage('Clean Up') {
             steps {
                 script {
@@ -88,6 +88,7 @@ pipeline {
                 }
             }
         }
+
         stage('Build Docker Image') {
             steps {
                 script {
@@ -97,15 +98,15 @@ pipeline {
                 }
             }
         }
+
         stage ('Push to Docker Hub') {
             steps {
                 script {
                     ///sh 'docker tag portfolio-v2:latest akash63/portfolio-v2:sept'
                     ///sh 'docker push akash63/portfolio-v2:sept'
                     docker.withRegistry('', DOCKER_PASS) {
-						docker_image = docker.build "${IMAGE_NAME}"
-					}
-					
+						        docker_image = docker.build "${IMAGE_NAME}"
+					          }
 					docker.withRegistry('', DOCKER_PASS) {
 						docker_image.push("${IMAGE_TAG}")
 						///docker_image.push('latest')
