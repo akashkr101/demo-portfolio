@@ -35,7 +35,7 @@ pipeline {
                         containers=$(docker ps --filter "ancestor=portfolio-v2" -q)
                         # Check if there are any running containers
                         if [ -z "$containers" ]; then
-                            echo "No 'portfolio' are running."
+                            echo "No 'portfolio' containers are running."
                         else
                             echo "Stopping and removing portfolio containers."
                             docker stop $containers
@@ -60,7 +60,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t portfolio-v2 .'
+                    sh 'docker buildx build -t portfolio-v2 .'
                     sh 'docker images'
                     
                 }
