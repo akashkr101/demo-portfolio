@@ -34,20 +34,9 @@ pipeline {
         }
         stage('Prepare SonarQube analysis') {
             steps {
-                script {
-                    echo "Running SonarQube analysis for branch: ${BRANCH_NAME}"
-                    if (BRANCH_NAME == 'origin/dev') {
-                        env.SONAR_PROJECT_KEY = 'portfolio-dev'
-                        env.SONAR_ENVIRONMENT = 'dev'
-                    } else if (BRANCH_NAME == 'origin/qa') {
-                        env.SONAR_PROJECT_KEY = 'portfolio-qa'
-                        env.SONAR_ENVIRONMENT = 'qa'
-                    } else if (BRANCH_NAME == 'origin/master') {
-                        env.SONAR_PROJECT_KEY = 'portfolio-master'
-                        env.SONAR_ENVIRONMENT = 'master'
-                    } else {
-                        error("Unknown branch: ${BRANCH_NAME}")
-                    }
+                echo 'Setting up environment for SonarQube analysis'
+                withSonarQubeEnv("${SONARQUBE_ENV}") {
+                    echo "SonarQube environment configured: ${SONARQUBE_ENV}"
                 }
             }
         }
@@ -60,15 +49,7 @@ pipeline {
         stage('Run SonarQube Analysis') {
             steps {
                 withSonarQubeEnv('Sonarqube') { // Name of your SonarQube server configured in Jenkins
-                    sh '''
-                    echo "Running sonar-scanner with the following parameters:"
-                    echo "sonar.projectKey=${SONAR_PROJECT_KEY}"
-                    echo "sonar.environment=${SONAR_ENVIRONMENT}"
-                    sonar-scanner \
-                      -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
-                      -Dsonar.environment=${SONAR_ENVIRONMENT} \
-                      -Dsonar.sources=src
-                    '''
+                    sh 'sonar-scanner'
                 }
             }
         }
