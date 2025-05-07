@@ -1,16 +1,16 @@
 pipeline {
     agent any
     environment {
-        // Detect branch name
+        DOCKERHUB_CREDENTIALS = 'dockerhub' // Replace with your Jenkins credentials ID
+        IMAGE_NAME = 'akash63/dummy'
         BRANCH_NAME = "${env.BRANCH_NAME ?: env.GIT_BRANCH}"
-
         APP_NAME = "portfolio-v2"
-		RELEASE = "2.0.0"
-		DOCKER_USER = "akash63"
-		DOCKER_PASS = "dockerhub-credentials"
-		IMAGE_NAME = "${DOCKER_USER}" +"/"+ "${APP_NAME}"
-		IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
-    }
+		    RELEASE = "2.0.0"
+		    DOCKER_USER = "akash63"
+		    DOCKER_PASS = "dockerhub"
+		    IMAGE_NAME = "${DOCKER_USER}" +"/"+ "${APP_NAME}"
+		    IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+      }
 
     stages {
         stage('checkout') {
@@ -60,27 +60,24 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t portfolio-v2 .'
-                    sh 'docker images'
-                    
+                    // Get sanitized branch name (replace slashes with dashes)
+                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '')?.replaceAll('/', '-')
+                    def buildTag = "${branch}-${env.BUILD_NUMBER}"
+
+                    dockerImage = docker.build("${IMAGE_NAME}:${buildTag}")
                 }
             }
         }
 
-        stage('Push to Docker Hub') {
-    steps {
-        script {
-            def dockerImage = docker.build("${IMAGE_NAME}:${IMAGE_TAG}")
-
-            withCredentials([usernamePassword(credentialsId: "${DOCKER_PASS}", usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                sh 'echo $PASSWORD | docker login -u $USERNAME --password-stdin'
-                dockerImage.push("${IMAGE_TAG}")
-                // Optional: dockerImage.push("latest")
+        stage('Push to DockerHub') {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
+                        dockerImage.push()
+                    }
+                }
             }
         }
-    }
-}
-
 
         stage('Run Docker Container') {
             steps {
