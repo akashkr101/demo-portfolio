@@ -2,6 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub' // Replace with your Jenkins credentials ID
+        IMAGE_NAME = 'akash63/demo'
         BRANCH_NAME = "${env.BRANCH_NAME ?: env.GIT_BRANCH}"
         APP_NAME = "portfolio-v2"
 		    RELEASE = "2.0.0"
@@ -82,7 +83,9 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', DOCKERHUB_CREDENTIALS) {
-                        dockerImage.push()
+                        // Push both the branch-specific and latest tags
+                        dockerImage.push("${buildTag}")
+                        dockerImage.push("latest")
                     }
                 }
             }
