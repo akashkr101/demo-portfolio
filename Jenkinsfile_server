@@ -2,7 +2,6 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub' // Replace with your Jenkins credentials ID
-        IMAGE_NAME = 'akash63/dummy'
         BRANCH_NAME = "${env.BRANCH_NAME ?: env.GIT_BRANCH}"
         APP_NAME = "portfolio-v2"
 		    RELEASE = "2.0.0"
