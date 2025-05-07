@@ -2,14 +2,7 @@ pipeline {
     agent any
     environment {
         DOCKERHUB_CREDENTIALS = 'dockerhub' // Replace with your Jenkins credentials ID
-        IMAGE_NAME = 'akash63/demo'
-        BRANCH_NAME = "${env.BRANCH_NAME ?: env.GIT_BRANCH}"
-        APP_NAME = "portfolio-v2"
-		    RELEASE = "2.0.0"
-		    DOCKER_USER = "akash63"
-		    DOCKER_PASS = "dockerhub"
-		    //IMAGE_NAME = "${DOCKER_USER}" +"/"+ "${APP_NAME}"
-		    IMAGE_TAG = "${RELEASE}-${BUILD_NUMBER}"
+        IMAGE_NAME = 'akash63/portfolio-v2'
       }
 
     stages {
@@ -32,7 +25,7 @@ pipeline {
                 script {
                     sh '''
                         # Get a list of all running containers
-                        containers=$(docker ps --filter "ancestor=demo" -q)
+                        containers=$(docker ps --filter "ancestor=portfolio-v2" -q)
                         # Check if there are any running containers
                         if [ -z "$containers" ]; then
                             echo "No 'portfolio' containers are running."
