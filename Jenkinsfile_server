@@ -1,8 +1,7 @@
 pipeline {
     agent any
     environment {
-        DOCKERHUB_CREDENTIALS = 'dockerhub' // Replace with your Jenkins credentials ID
-        IMAGE_NAME = 'akash63/portfolio-v2'
+        
       }
 
     stages {
@@ -53,18 +52,11 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def currentDate = new Date().format('dd-MM')
-                    def branch = env.GIT_BRANCH?.replaceAll('origin/', '')?.replaceAll('/', '-')
-                    def buildNum = env.BUILD_NUMBER
-                    def buildTag = "${branch}-${buildNum}-${currentDate}"
-        
-                    echo "Docker Tag: ${buildTag}"
-        
-                    // Build once with main tag
-                    dockerImage = docker.build("${IMAGE_NAME}:${buildTag}")
-        
-                    // Add 'latest' tag to the same image (locally)
-                    sh "docker tag ${IMAGE_NAME}:${buildTag} ${IMAGE_NAME}:latest"
+                    // Define your image name
+                    def imageName = "demo"
+
+                    // Build the Docker image using a Dockerfile in the 'docker' folder
+                    sh "docker build -f docker/Dockerfile -t ${imageName} ."
                 }
             }
         }
