@@ -59,9 +59,16 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Get sanitized branch name (replace slashes with dashes)
+                    // Get the current date
+                    def date = new Date().format('dd-MM')
+                    
+                    // Sanitize branch name (replace slashes with dashes)
                     def branch = env.GIT_BRANCH?.replaceAll('origin/', '')?.replaceAll('/', '-')
-                    def buildTag = "${branch}-${env.BUILD_NUMBER}"
+                    
+                    // Combine all parts to create a unique image tag
+                    def buildTag = "${branch}-${env.BUILD_NUMBER}-${date}"
+
+                    echo "Building image with tag: ${buildTag}"
 
                     dockerImage = docker.build("${IMAGE_NAME}:${buildTag}")
                 }
