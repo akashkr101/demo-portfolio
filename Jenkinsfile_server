@@ -60,7 +60,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker buildx build -t portfolio-v2 .'
+                    sh 'docker build -t portfolio-v2 .'
                     sh 'docker images'
                     
                 }
