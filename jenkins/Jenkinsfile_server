@@ -58,7 +58,7 @@ pipeline {
                     docker.build("${imageName}:${buildTag}")  // buildTag = v1.0.${env.BUILD_ID}
                     docker.build("${imageName}:latest")       // also tag as latest
                     sh "docker tag ${imageName}:${buildTag} ${imageName}:latest"
-                    sh "docker tag ${imageName}:${buildTag} ${imageName}:${dateTag}"
+                    //sh "docker tag ${imageName}:${buildTag} ${imageName}:${dateTag}"
                 }
             }
         }
