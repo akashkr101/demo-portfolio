@@ -21,27 +21,6 @@ pipeline {
             }
         }
 
-        stage('Archive Build Artifacts') {
-            steps {
-                echo '📦 Zipping and archiving build output...'
-
-                // Zip the Angular dist output
-                sh '''
-                    cd dist
-                    zip -r portfolio.zip portfolio/
-                '''
-
-                // Archive zip file for Jenkins
-                archiveArtifacts artifacts: 'dist/portfolio.zip', allowEmptyArchive: true
-
-                // Copy zip to a persistent location
-                sh '''
-                    #mkdir -p /home/ubuntu/akash
-                    cp dist/portfolio.zip /home/ubuntu/akash/
-                '''
-            }
-        }
-
         stage('Prepare SonarQube analysis') {
             steps {
                 script {
