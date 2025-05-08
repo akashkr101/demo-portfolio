@@ -3,7 +3,6 @@ pipeline {
     environment {
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
         buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
-        imageName = 'akash63/demo'
     }
     stages {
         stage('checkout') {
@@ -54,7 +53,7 @@ pipeline {
                 script {
                     def dockerUsername = "akash63"
                     def imageName = "${dockerUsername}/demo"
-                    def dockerImage = docker.build("${imageName}:${buildTag}")
+                    //def dockerImage = docker.build("${imageName}:${buildTag}")
                     // Define your image name and assign the built image to the dockerImage variable
                     dockerImage = docker.build("${imageName}:${buildTag}")
                 }
