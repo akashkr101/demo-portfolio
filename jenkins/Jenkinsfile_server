@@ -1,6 +1,7 @@
 pipeline {
     agent any
     environment {
+        BRANCH_NAME = "${env.BRANCH_NAME ?: env.GIT_BRANCH}"
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
         buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
         dateTag = "${new Date().format('yyyy-MM-dd')}"
