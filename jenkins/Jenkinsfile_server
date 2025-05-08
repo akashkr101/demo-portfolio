@@ -31,9 +31,9 @@ pipeline {
                     } else if (BRANCH_NAME == 'origin/qa') {
                         env.SONAR_PROJECT_KEY = 'portfolio-qa'
                         env.SONAR_ENVIRONMENT = 'qa'
-                    } else if (BRANCH_NAME == 'origin/qa') {
-                        env.SONAR_PROJECT_KEY = 'portfolio-qa'
-                        env.SONAR_ENVIRONMENT = 'qa'
+                    } else if (BRANCH_NAME == 'origin/master') {
+                        env.SONAR_PROJECT_KEY = 'portfolio-master'
+                        env.SONAR_ENVIRONMENT = 'master'
                     } else {
                         error("Unknown branch: ${BRANCH_NAME}")
                     }
