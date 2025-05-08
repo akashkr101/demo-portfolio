@@ -74,7 +74,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    sh 'docker run -d -p 7000:80 demo'
+                    sh 'docker run -d -p 7000:80 akash63/demo'
                     sh 'docker ps -a'
                 }
             }
