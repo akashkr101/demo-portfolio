@@ -137,5 +137,14 @@ pipeline {
         failure {
             echo '❌ Build failed!'
         }
+        unstable {
+        echo 'Build is unstable.'
+        }
+        changed {
+            echo 'Build status changed.'
+        }
+        aborted {
+            echo 'Build was aborted.'
+        }
     }
 }
