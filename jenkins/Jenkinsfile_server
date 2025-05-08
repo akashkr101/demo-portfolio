@@ -65,8 +65,7 @@ pipeline {
                 script {
                         // Push the image to DockerHub with the specified tags
                         docker.withRegistry('', credentials-id) {
-                        dockerImage.push("${buildTag}")  // Push with specific buildTag
-                        dockerImage.push("latest")       // Push with 'latest' tag
+                        dockerImage.push("${buildTag}")
                     }
                 }
             }
