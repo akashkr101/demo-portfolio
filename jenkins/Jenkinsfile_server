@@ -36,7 +36,7 @@ pipeline {
 
                 // Copy zip to a persistent location
                 sh '''
-                    mkdir -p /home/ubuntu/akash
+                    //mkdir -p /home/ubuntu/akash
                     mv dist/portfolio.zip /home/ubuntu/akash/
                 '''
             }
