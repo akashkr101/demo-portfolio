@@ -3,7 +3,7 @@ pipeline {
     environment {
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
         buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
-        imageName = 'akash63/demo'  // Update with your actual repo
+        
     }
     stages {
         stage('checkout') {
