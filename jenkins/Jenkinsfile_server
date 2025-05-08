@@ -54,9 +54,6 @@ pipeline {
                 script {
                     def dockerUsername = "akash63"
                     def imageName = "${dockerUsername}/demo"
-                    //def dockerImage = docker.build("${imageName}:${buildTag}")
-                    // Define your image name and assign the built image to the dockerImage variable
-                    //dockerImage = docker.build("${imageName}:${buildTag}")
                     docker.build("${imageName}:${buildTag}")  // buildTag = v1.0.${env.BUILD_ID}
                     docker.build("${imageName}:latest")       // also tag as latest
                 }
@@ -66,8 +63,6 @@ pipeline {
         stage('Push to DockerHub') {
             steps {
                 script {
-                        //docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
-                        //docker.image("${imageName}:${buildTag}").push()
                         docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
                         docker.image("${imageName}:${buildTag}").push()
                         docker.image("${imageName}:latest").push()
