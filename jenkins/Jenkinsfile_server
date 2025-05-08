@@ -132,10 +132,10 @@ pipeline {
         sh 'docker image prune -f'
         }
         success {
-            echo "Pipeline success"
+            echo '✅ Build succeeded!'
         }
         failure {
-            echo "Pipeline failed"
+            echo '❌ Build failed!'
         }
     }
 }
