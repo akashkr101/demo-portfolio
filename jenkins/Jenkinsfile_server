@@ -4,7 +4,7 @@ pipeline {
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
         buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
         dateTag = "${new Date().format('yyyy-MM-dd')}"
-        imageName = 'akash63/demo'
+        imageName = 'akash63/demo'  //If it is not there in dockerhub it will create repo automatically but we'll have to change all places
     }
     stages {
         stage('checkout') {
@@ -78,8 +78,7 @@ pipeline {
             steps {
                 script {
                     //sh "docker run -d -p 7000:80 --name demo ${imageName}:${buildTag}" //if you want the container with build tag
-                    //sh "docker run -d -p 7000:80 --name demo ${imageName}:latest"      // if you want container with latest tag
-
+                    sh "docker run -d -p 7000:80 --name demo ${imageName}:latest"      // if you want container with latest tag
                     sh 'docker ps -a'
                 }
             }
