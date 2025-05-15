@@ -12,7 +12,7 @@ jobs:
 
     steps:
     # Step 2: Download the artifact (JAR file) from the completed "Build CI" workflow.
-    - name: Download JAR file artifact from Build CI workflow
+    - name: Download build file artifact
       uses: actions/download-artifact@v4
       with:
           name: portfolio
