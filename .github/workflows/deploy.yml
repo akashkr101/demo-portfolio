@@ -11,10 +11,6 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    # Step 1: Check out the repository to the GitHub runner.
-    - name: Checkout repository
-      uses: actions/checkout@v4
-
     # Step 2: Download the artifact (JAR file) from the completed "Build CI" workflow.
     - name: Download JAR file artifact from Build CI workflow
       uses: actions/download-artifact@v4
