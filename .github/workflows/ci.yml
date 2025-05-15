@@ -99,7 +99,7 @@ jobs:
           echo "four"
           echo $GITHUB_WORKSPACE
           echo "five"
-          ls /archive
+          ls ./archive
   
       #Step 3: List down the downloaded build file      
       - name: List contents to verify artifact location
