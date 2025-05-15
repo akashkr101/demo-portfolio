@@ -76,3 +76,17 @@ jobs:
         with:
           name: portfolio
           path: ./portfolio.zip
+
+      # Step 2: Download the artifact (JAR file) from the completed "Build CI" workflow.
+      - name: Download build file artifact
+        uses: actions/download-artifact@v4
+        with:
+            name: portfolio
+            run-id: ${{ github.event.workflow_run.id }}
+  
+      #Step 3: List down the downloaded build file      
+      - name: List contents to verify artifact location
+        run: |
+          echo "check in all folders"
+          find "$GITHUB_WORKSPACE"
+        shell: bash
