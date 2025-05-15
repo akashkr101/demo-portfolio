@@ -50,18 +50,14 @@ jobs:
         run: npm install
       - name: Build Angular app
         run: npm run build
-        
-  zip-and-upload:
-    name: Zip and Upload Angular Build
-    runs-on: ubuntu-latest
-    needs: build-angular
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
 
-      - name: Compress Angular Build
-        shell: pwsh
-        run: Compress-Archive -Path dist/* -DestinationPath portfolio.zip
+      - name: Compress Angular Build (Shell)
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "dist folder does not exist"
+            exit 1
+          fi
+          zip -r portfolio.zip dist/
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4
