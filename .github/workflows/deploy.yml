@@ -7,8 +7,9 @@ on:
       - completed
 
 jobs:
-  build:
+  Download:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: checkout
     runs-on: ubuntu-latest # The workflow runs on the latest Windows environment.
     steps:
     # Step 1: Check out the repository to the GitHub runner.
@@ -19,7 +20,7 @@ jobs:
     - name: Download build file artifact from Build CI workflow
       uses: actions/download-artifact@v4
       with:
-          name: PrototipoFrontend
+          name: portfolio
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ secrets.GITHUB_TOKEN 
           
@@ -40,7 +41,7 @@ jobs:
       - name: Build and push Docker image with branch-based tag
         run: |
           TAG=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/demo-portfolio:$TAG
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/portfolio-v1:$TAG
           docker build -t $IMAGE .
           docker push $IMAGE
 
