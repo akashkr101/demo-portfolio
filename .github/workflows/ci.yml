@@ -82,7 +82,21 @@ jobs:
         uses: actions/download-artifact@v4
         with:
             name: portfolio
-            run-id: ${{ github.event.workflow_run.id }}
+            path: /archive
+            #run-id: ${{ github.event.workflow_run.id }}
+            
+      - name: check
+        run: |
+          echo "one"
+          ls
+          echo "two"
+          ls dist
+          echo "three"
+          pwd
+          echo "four"
+          echo $GITHUB_WORKSPACE
+          echo "five"
+          ls /archive
   
       #Step 3: List down the downloaded build file      
       - name: List contents to verify artifact location
