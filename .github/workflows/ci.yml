@@ -67,6 +67,7 @@ jobs:
       - name: check
         run: |
           ls
+          ls dist
           pwd
           echo $GITHUB_WORKSPACE
 
