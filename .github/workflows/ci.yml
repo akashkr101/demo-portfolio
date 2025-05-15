@@ -15,9 +15,9 @@ on:
         default: dev
         type: choice
         options:
-          - dev
-          - qa
-          - prod
+          #- dev
+          #- qa
+          #- prod
           - master
 
 jobs:
