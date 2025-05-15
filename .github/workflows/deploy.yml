@@ -1,4 +1,3 @@
-#Deploy
 name: Deploy
 
 on:
@@ -8,8 +7,31 @@ on:
       - completed
 
 jobs:
-  build-and-push:
+  Download:
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    name: checkout
+    runs-on: ubuntu-latest # The workflow runs on the latest Windows environment.
+    steps:
+    # Step 1: Check out the repository to the GitHub runner.
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Step 2: Download the artifact (JAR file) from the completed "Build CI" workflow.
+    - name: Download build file artifact from Build CI workflow
+      uses: actions/download-artifact@v4
+      with:
+          name: portfolio
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ secrets.GITHUB_TOKEN 
+          
+    #Step 3: List down the downloaded build file      
+    - name: List contents to verify artifact location
+      run: |
+        echo "check in all folders"
+        Get-ChildItem -Path "$env:GITHUB_WORKSPACE" -Recurse
+      shell: pwsh
+          
+  build-and-push:
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
     steps:
@@ -19,7 +41,7 @@ jobs:
       - name: Build and push Docker image with branch-based tag
         run: |
           TAG=$(echo "${{ github.ref_name }}" | sed 's/\//-/g')
-          IMAGE=${{ secrets.DOCKER_USERNAME }}/demo-portfolio:$TAG
+          IMAGE=${{ secrets.DOCKER_USERNAME }}/portfolio-v1:$TAG
           docker build -t $IMAGE .
           docker push $IMAGE
 

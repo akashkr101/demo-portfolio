@@ -1,7 +1,13 @@
 name: Build
 
 on:
-  workflow_dispatch:
+  #push:
+  #  branches:
+  #    - master  # Trigger the workflow when code is pushed to the main branch
+  #pull_request:
+  #  branches:
+  #    - master  # Trigger the workflow for pull requests targeting the main branch
+  workflow_dispatch:  # Allow manual trigger
     inputs:
       environment:
         description: select environment
@@ -40,7 +46,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'  # Enable caching for npm dependencies
+          cache-dependency-path: package-lock.json  # Use package-lock.json for cache verification
+          
       - name: Install dependencies
-        run: npm install
+        #run: npm install
+        run: npm ci # Install dependencies using a clean install (ensures reproducible builds)
+        
       - name: Build Angular app
         run: npm run build
+
+      - name: Compress Angular Build (Shell)
+        run: |
+          if [ ! -d "dist" ]; then
+            echo "dist folder does not exist"
+            exit 1
+          fi
+          zip -r portfolio.zip dist/
+
+      - name: Upload Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: portfolio
+          path: portfolio.zip
