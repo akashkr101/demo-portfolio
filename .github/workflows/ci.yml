@@ -46,10 +46,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 18
+          cache: 'npm'  # Enable caching for npm dependencies
+          cache-dependency-path: package-lock.json  # Use package-lock.json for cache verification
           
       - name: Install dependencies
         #run: npm install
-        run: npm ci
+        run: npm ci # Install dependencies using a clean install (ensures reproducible builds)
         
       - name: Build Angular app
         run: npm run build
