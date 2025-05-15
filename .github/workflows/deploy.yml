@@ -8,6 +8,7 @@ on:
 
 jobs:
   build:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest # The workflow runs on the latest Windows environment.
     steps:
     # Step 1: Check out the repository to the GitHub runner.
@@ -30,7 +31,6 @@ jobs:
       shell: pwsh
           
   build-and-push:
-    #if: ${{ github.event.workflow_run.conclusion == 'success' }}
     name: Build and Push Docker Image
     runs-on: ubuntu-latest
     steps:
