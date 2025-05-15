@@ -68,4 +68,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portfolio
-          path: portfolio.zip
+          path: ./dist
