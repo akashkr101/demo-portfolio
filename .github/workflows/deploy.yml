@@ -16,6 +16,7 @@ jobs:
       uses: actions/download-artifact@v4
       with:
           name: portfolio
+          path: ./archive
           run-id: ${{ github.event.workflow_run.id }}
 
     #Step 3: List down the downloaded build file      
