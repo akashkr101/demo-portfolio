@@ -107,3 +107,9 @@ jobs:
           echo "check in all folders"
           find "$GITHUB_WORKSPACE"
         shell: bash
+
+      # Step 3: Install rclone (a tool for managing cloud storage) using Chocolatey.
+      - name: Install rclone
+        run: |
+            choco install rclone -y
+            rclone version
