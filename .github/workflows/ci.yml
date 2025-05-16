@@ -119,4 +119,9 @@ jobs:
           echo "${RCLONE_CONFIG_CONTENT}" > ~/.config/rclone/rclone.conf
         env:
           RCLONE_CONFIG_CONTENT: ${{ secrets.RCLONE_CONFIG }}
+          
+      #Test rclone in CI
+      - name: List OneDrive root
+        run: rclone lsd onedrive
+
 
