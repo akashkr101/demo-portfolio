@@ -75,7 +75,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: portfolio
-          path: ./portfolio.zip
+          path: ./archive
 
       - name: Create archive directory
         run: sudo mkdir -p /archive && sudo chmod 777 /archive
