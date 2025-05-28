@@ -5,7 +5,7 @@ pipeline {
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
         buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
         dateTag = "${new Date().format('yyyy-MM-dd')}"
-        imageName = 'akash63/portfolio-v2'  //If it is not there in dockerhub it will create repo automatically but we'll have to change all places
+        imageName = 'portfolio-v2'
         PATH = "/opt/sonar-scanner/bin:$PATH"
     }
     stages {
@@ -97,7 +97,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh 'docker build -t portfolio:latest .'
+                    sh 'docker build -t $imageName:latest .'
                 }
             }
         }
