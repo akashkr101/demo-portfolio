@@ -3,9 +3,9 @@ pipeline {
     environment {
         BRANCH_NAME = "${env.BRANCH_NAME ?: env.GIT_BRANCH}"
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
-        buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
+        buildTag = "v${env.BUILD_NUMBER}"              // Auto-incremental version tag
         dateTag = "${new Date().format('yyyy-MM-dd')}" //if you want to tag the image with date you can use this
-        imageName = 'portfolio-v2'  // this is for create docker image and the same it will be used to push to the dockerhub
+        imageName = 'akash63/portfolio-v2'  // this is for create docker image and the same it will be used to push to the dockerhub
         PATH = "/opt/sonar-scanner/bin:$PATH"  //This is for sonar-scanner
     }
     stages {
@@ -97,7 +97,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build -t ${imageName}:latest ."
+                    sh "docker build -t ${imageName}:latest -t ${imageName}:${buildTag} ."
                 }
             }
         }
@@ -106,7 +106,7 @@ pipeline {
             steps {
                 script {
                         docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
-                        //docker.image("${imageName}:${buildTag}").push() //This will push one more image with build tag
+                        docker.image("${imageName}:${buildTag}").push()
                         docker.image("${imageName}:latest").push()
                     }
                 }
