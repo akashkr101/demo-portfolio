@@ -6,7 +6,7 @@ pipeline {
         buildTag = "v1.0.${env.BUILD_ID}"              // Auto-incremental version tag
         dateTag = "${new Date().format('yyyy-MM-dd')}"
         imageName = 'portfolio/demo'  //If it is not there in dockerhub it will create repo automatically but we'll have to change all places
-        //PATH = "/opt/sonar-scanner/bin:$PATH"
+        PATH = "/opt/sonar-scanner/bin:$PATH"
     }
     stages {
         stage('checkout') {
