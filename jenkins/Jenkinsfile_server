@@ -98,7 +98,7 @@ pipeline {
             steps {
                 script {
                     def dockerUsername = "akash63"
-                    def ImageName = "${dockerUsername}/portfolio-v2"
+                    def imageName = "${dockerUsername}/portfolio-v2" //change the image name you want to give
                     docker.build("${imageName}:${buildTag}")  // buildTag = v1.0.${env.BUILD_ID}
                     docker.build("${imageName}:latest")       // also tag as latest
                     sh "docker tag ${imageName}:${buildTag} ${imageName}:latest"
