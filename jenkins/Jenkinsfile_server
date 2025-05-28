@@ -69,7 +69,7 @@ pipeline {
                 script {
                     sh '''
                         # Get a list of all running containers
-                        containers=$(docker ps --filter "ancestor=akash63/demo" -q)
+                        containers=$(docker ps --filter "ancestor=portfolio" -q)
                         # Check if there are any running containers
                         if [ -z "$containers" ]; then
                             echo "No 'portfolio' containers are running."
@@ -81,7 +81,7 @@ pipeline {
                     '''
                     sh '''
                         # Get a list of all Docker images
-                        images=$(docker images --filter "reference=*akash63/demo*" -q)
+                        images=$(docker images --filter "reference=*portfolio/demo*" -q)
                         # Check if there are any Docker images
                         if [ -z "$images" ]; then
                             echo "No 'portfolio' images found."
