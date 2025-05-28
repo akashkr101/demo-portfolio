@@ -81,7 +81,7 @@ pipeline {
                     '''
                     sh '''
                         # Get a list of all Docker images
-                        images=$(docker images --filter "reference=*portfolio/demo*" -q)
+                        images=$(docker images --filter "reference=*portfolio*" -q)
                         # Check if there are any Docker images
                         if [ -z "$images" ]; then
                             echo "No 'portfolio' images found."
@@ -97,7 +97,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    def dockerUsername = "akash63"
+                    def dockerUsername = "portfolio"
                     def imageName = "${dockerUsername}/demo"
                     docker.build("${imageName}:${buildTag}")  // buildTag = v1.0.${env.BUILD_ID}
                     docker.build("${imageName}:latest")       // also tag as latest
