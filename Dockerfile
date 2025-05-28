@@ -29,7 +29,9 @@ COPY . .
 
 # Build the Angular app for production
 RUN npm install -g @angular/cli
-RUN ng build 
+RUN ng build
+RUN npm audit fix
+RUN npm fund
 
 # Use a lightweight web server to serve the Angular app
 FROM nginx:alpine
