@@ -119,7 +119,6 @@ pipeline {
                       }
                     sh "docker push ${DOCKER_REPO}:${env.IMAGE_TAG}"
                     sh "docker logout"
-                    }
                 }
             }
         }
