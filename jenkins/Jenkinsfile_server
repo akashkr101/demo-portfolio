@@ -99,6 +99,7 @@ pipeline {
                 script {
                     echo "Building Docker image with tags: ${imageName}:${buildTag} and ${imageName}:latest"
                     sh "docker build -t ${imageName}:${buildTag} -t ${imageName}:latest ."
+                    //sh "docker build -t ${imageName}:latest ."
                 }
             }
         }
