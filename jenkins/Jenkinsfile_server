@@ -97,9 +97,9 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo "Building Docker image with tags: ${imageName}:${buildTag} and ${imageName}:latest"
-                    sh "docker build -t ${imageName}:${buildTag} -t ${imageName}:latest ."
-                    //sh "docker build -t ${imageName}:latest ."
+                    //echo "Building Docker image with tags: ${imageName}:${buildTag} and ${imageName}:latest"
+                    //sh "docker build -t ${imageName}:${buildTag} -t ${imageName}:latest ."
+                    sh "docker build -t ${imageName}:latest ."
                 }
             }
         }
