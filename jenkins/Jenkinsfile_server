@@ -97,9 +97,8 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    //echo "Building Docker image with tags: ${imageName}:${buildTag} and ${imageName}:latest"
-                    //sh "docker build -t ${imageName}:${buildTag} -t ${imageName}:latest ."
-                    sh "docker build -t ${imageName}:latest ."
+                    echo "Building Docker image with tags: ${imageName}:${buildTag} and ${imageName}:latest"
+                    sh "docker build -t ${imageName}:${buildTag} -t ${imageName}:latest ."
                 }
             }
         }
@@ -108,12 +107,13 @@ pipeline {
             steps {
                 script {
                         echo "Pushing Docker image to DockerHub..."
+                        sh "docker images | grep ${imageName}"
                         docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
-                        echo "Pushing tag: ${imageName}:${buildTag}"
-                        docker.image("${imageName}:${buildTag}").push()
-
-                        echo "Pushing tag: ${imageName}:latest"
-                        docker.image("${imageName}:latest").push()
+                          echo "Pushing tag: ${imageName}:${buildTag}"
+                          docker.image("${imageName}:${buildTag}").push()
+  
+                          echo "Pushing tag: ${imageName}:latest"
+                          docker.image("${imageName}:latest").push()
                     }
                 }
             }
