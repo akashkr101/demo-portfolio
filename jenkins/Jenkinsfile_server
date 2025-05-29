@@ -5,7 +5,7 @@ pipeline {
         dockerhub = 'dockerhub-credentials-id'         // Jenkins credential ID
         buildTag = "v${env.BUILD_NUMBER}"              // Auto-incremental version tag
         dateTag = "${new Date().format('yyyy-MM-dd')}" //if you want to tag the image with date you can use this
-        imageName = 'akash63/portfolio-v2'  // this is for create docker image and the same it will be used to push to the dockerhub
+        DOCKER_REPO = "akash63/portfolio-v2"
         PATH = "/opt/sonar-scanner/bin:$PATH"  //This is for sonar-scanner
     }
     stages {
@@ -97,8 +97,14 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    echo "Building Docker image with tags: ${imageName}:${buildTag} and ${imageName}:latest"
-                    sh "docker build -t ${imageName}:${buildTag} -t ${imageName}:latest ."
+                    def branch = env.BRANCH_NAME.replaceAll('/', '-')
+                    def dateTag = "${branch}-${new Date().format('yyyy-MM-dd')}"
+                    echo "Building Docker image with tag: ${dateTag}"
+
+                    sh "docker build -t ${DOCKER_REPO}:${dateTag} ."
+
+                    // Save the tag in environment for next stage
+                    env.IMAGE_TAG = dateTag
                 }
             }
         }
@@ -108,12 +114,11 @@ pipeline {
                 script {
                         echo "Pushing Docker image to DockerHub..."
                         sh "docker images | grep ${imageName}"
-                        docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
-                          echo "Pushing tag: ${imageName}:${buildTag}"
-                          docker.image("${imageName}:${buildTag}").push()
-  
-                          echo "Pushing tag: ${imageName}:latest"
-                          docker.image("${imageName}:latest").push()
+                        withCredentials([usernamePassword(credentialsId: 'dockerhub-credentials-id', usernameVariable: 'DOCKER_USER', passwordVariable: 'DOCKER_PASS')]) {
+                        sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+                      }
+                    sh "docker push ${DOCKER_REPO}:${env.IMAGE_TAG}"
+                    sh "docker logout"
                     }
                 }
             }
