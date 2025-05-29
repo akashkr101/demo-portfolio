@@ -117,7 +117,7 @@ pipeline {
                         sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
                       }
                     sh "docker push ${DOCKER_REPO}:${env.IMAGE_TAG}"
-                    sh "docker logout"
+                    //sh "docker logout"
                 }
             }
         }
@@ -125,8 +125,7 @@ pipeline {
         stage('Run Docker Container') {
             steps {
                 script {
-                    //sh "docker run -d -p 7000:80 --name demo ${imageName}:${buildTag}" //if you want the container with build tag
-                    sh "docker run -d -p 7000:80 --name demo ${imageName}:latest"      // if you want container with latest tag
+                    sh "docker run -d -p 7000:80 --name akash63/portfolio-v2"
                     sh 'docker ps -a'
                 }
             }
